@@ -2,7 +2,7 @@
 NONE = 0
 USEABLE_ITEMS = 1
 FORMULAS = 2
-S = 3
+WEAPONS = 3
 CHEST = 4
 HANDS = 5
 FEET = 6
@@ -55,27 +55,27 @@ ICE2 = 130
 WIND = 131
 
 #Weapon ID enums
-_Sword = 0
-_Axe = 1
-_Mace = 2
-_Dagger = 3
-_Fist = 4
-_Longsword = 5
-_Bow = 6
-_Crossbow = 7
-_Boomerang = 8
-_Arrow = 9
-_Staff = 10
-_Wand = 11
-_Bracelet = 12
-_Shield = 13
-_Arrows = 14
-_Greatsword = 15
-_Greataxe = 16
-_Greatmace = 17
-_Fork = 18
-_Pickaxe = 19
-_Torch = 20
+Sword = 0
+Axe = 1
+Mace = 2
+Dagger = 3
+Fist = 4
+Longsword = 5
+Bow = 6
+Crossbow = 7
+Boomerang = 8
+Arrow = 9
+Staff = 10
+Wand = 11
+Bracelet = 12
+Shield = 13
+Arrows = 14
+Greatsword = 15
+Greataxe = 16
+Greatmace = 17
+Fork = 18
+Pickaxe = 19
+Torch = 20
 
 #Usable Items ID enums
 Cookie = 0
@@ -122,7 +122,7 @@ CRIT: {(self.GetCritStat()*100):.1f}%
 ARMOR: {self.GetArmorStat():.1f}''')
     
     def GetHPStat(self):
-        if self.mainID not in (S, CHEST, SHOULDER, HANDS, FEET):
+        if self.mainID not in (WEAPONS, CHEST, SHOULDER, HANDS, FEET):
             return 0
         
         if self.mainID == CHEST:
@@ -145,15 +145,15 @@ ARMOR: {self.GetArmorStat():.1f}''')
         return level_multiplier * 5.0 * chest_multiplier * material_multiplier
 
     def GetTempoStat(self):
-        if self.mainID not in (NECK, RING, S, CHEST, SHOULDER, HANDS, FEET):
+        if self.mainID not in (NECK, RING, WEAPONS, CHEST, SHOULDER, HANDS, FEET):
             return 0
         
         weaponType_multiplier = 0.1
-        if self.mainID == S:
-            if self.subID in (_Greatsword, _Greataxe, _Greatmace,
-                              _Longsword, _Staff, _Wand,
-                              _Fork, _Boomerang, _Bow,
-                              _Crossbow):
+        if self.mainID == WEAPONS:
+            if self.subID in (Greatsword, Greataxe, Greatmace,
+                              Longsword, Staff, Wand,
+                              Fork, Boomerang, Bow,
+                              Crossbow):
                 weaponType_multiplier = 0.2
                 
         elif self.mainID == CHEST:
@@ -189,7 +189,7 @@ ARMOR: {self.GetArmorStat():.1f}''')
         return SomeCurve(self.number_of_spirits * 0.1 + self.level, self.rarity) * chest_multiplier
 
     def GetRegStat(self):
-        if self.mainID not in (S, CHEST, SHOULDER, HANDS, FEET):
+        if self.mainID not in (WEAPONS, CHEST, SHOULDER, HANDS, FEET):
             return 0
         
         if self.mainID == CHEST:
@@ -208,33 +208,33 @@ ARMOR: {self.GetArmorStat():.1f}''')
         return level_multiplier * chest_multiplier * attribute_multiplier
 
     def GetDMGStat(self):
-        if self.mainID != S:
+        if self.mainID != WEAPONS:
             return 0
         spirit_multiplier = self.number_of_spirits * 0.1
 
-        if self.subID in (_Dagger, _Fist):
+        if self.subID in (Dagger, Fist):
             return SomeCurve(self.level + spirit_multiplier, self.rarity) * 2
-        elif self.subID == _Longsword:
+        elif self.subID == Longsword:
             return SomeCurve(self.level + spirit_multiplier, self.rarity) * 4
-        elif self.subID == _Shield:
+        elif self.subID == Shield:
             return SomeCurve(self.level + spirit_multiplier, self.rarity) * 2
-        elif self.subID in (_Greatsword, _Greataxe, _Greatmace,
-                            _Longsword, _Staff, _Wand,
-                            _Fork, _Boomerang, _Bow,
-                            _Crossbow):
+        elif self.subID in (Greatsword, Greataxe, Greatmace,
+                            Longsword, Staff, Wand,
+                            Fork, Boomerang, Bow,
+                            Crossbow):
             return SomeCurve(self.level + spirit_multiplier, self.rarity) * 8
         else:
             return SomeCurve(self.level + spirit_multiplier, self.rarity) * 4
             
     def GetCritStat(self):
-        if self.mainID not in (NECK, RING, S, CHEST, SHOULDER, HANDS, FEET):
+        if self.mainID not in (NECK, RING, WEAPONS, CHEST, SHOULDER, HANDS, FEET):
             return 0
         multiplier = 0.05
-        if self.mainID == S:
-            if self.subID in (_Greatsword, _Greataxe, _Greatmace,
-                              _Longsword, _Staff, _Wand,
-                              _Fork, _Boomerang, _Bow,
-                              _Crossbow):
+        if self.mainID == WEAPONS:
+            if self.subID in (Greatsword, Greataxe, Greatmace,
+                              Longsword, Staff, Wand,
+                              Fork, Boomerang, Bow,
+                              Crossbow):
                 multiplier = 0.1
         elif self.mainID == CHEST:
             multiplier = 0.1
@@ -283,8 +283,8 @@ ARMOR: {self.GetArmorStat():.1f}''')
 
 
 ##item = Item(
-##    mainID = S,
-##    subID = _Greatmace,
+##    mainID = WEAPONS,
+##    subID = Greatmace,
 ##    mod = 5,
 ##    attributes = 9,
 ##    material = WOOD,
@@ -292,7 +292,7 @@ ARMOR: {self.GetArmorStat():.1f}''')
 ##    level = 33,
 ##    rarity = 7
 ##    )
-    
+##    
 ##item = Item(
 ##    mainID = HANDS,
 ##    subID = 0,
@@ -345,8 +345,8 @@ ARMOR: {self.GetArmorStat():.1f}''')
 ##            for rarity in range(0, 5):
 ##                
 ##                item = Item(
-##                    mainID = S,
-##                    subID = _Greatmace,
+##                    mainID = WEAPONS,
+##                    subID = Greatmace,
 ##                    mod = mod,
 ##                    attributes = attributes,
 ##                    material = material,
