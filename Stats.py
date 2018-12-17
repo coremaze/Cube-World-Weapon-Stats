@@ -2,7 +2,7 @@
 NONE = 0
 USEABLE_ITEMS = 1
 FORMULAS = 2
-WEAPONS = 3
+S = 3
 CHEST = 4
 HANDS = 5
 FEET = 6
@@ -55,27 +55,39 @@ ICE2 = 130
 WIND = 131
 
 #Weapon ID enums
-WEAPON_Sword = 0
-WEAPON_Axe = 1
-WEAPON_Mace = 2
-WEAPON_Dagger = 3
-WEAPON_Fist = 4
-WEAPON_Longsword = 5
-WEAPON_Bow = 6
-WEAPON_Crossbow = 7
-WEAPON_Boomerang = 8
-WEAPON_Arrow = 9
-WEAPON_Staff = 10
-WEAPON_Wand = 11
-WEAPON_Bracelet = 12
-WEAPON_Shield = 13
-WEAPON_Arrows = 14
-WEAPON_Greatsword = 15
-WEAPON_Greataxe = 16
-WEAPON_Greatmace = 17
-WEAPON_Fork = 18
-WEAPON_Pickaxe = 19
-WEAPON_Torch = 20
+_Sword = 0
+_Axe = 1
+_Mace = 2
+_Dagger = 3
+_Fist = 4
+_Longsword = 5
+_Bow = 6
+_Crossbow = 7
+_Boomerang = 8
+_Arrow = 9
+_Staff = 10
+_Wand = 11
+_Bracelet = 12
+_Shield = 13
+_Arrows = 14
+_Greatsword = 15
+_Greataxe = 16
+_Greatmace = 17
+_Fork = 18
+_Pickaxe = 19
+_Torch = 20
+
+#Usable Items ID enums
+Cookie = 0
+LifePotion = 1
+CactusPotion = 2
+ManaPotion = 3
+GinsengSoup = 4
+SnowberryMash = 5
+MushroomSpit = 6
+Bomb = 7
+PineappleSlice = 8
+PumpkinMuffin = 9
 
 def SomeCurve(n, m):
     x = 2 ** (((1.0 - (1.0 / (((n - 1.0) * 0.05) + 1.0))) * 3.0))
@@ -110,7 +122,7 @@ CRIT: {(self.GetCritStat()*100):.1f}%
 ARMOR: {self.GetArmorStat():.1f}''')
     
     def GetHPStat(self):
-        if self.mainID not in (WEAPONS, CHEST, SHOULDER, HANDS, FEET):
+        if self.mainID not in (S, CHEST, SHOULDER, HANDS, FEET):
             return 0
         
         if self.mainID == CHEST:
@@ -133,15 +145,15 @@ ARMOR: {self.GetArmorStat():.1f}''')
         return level_multiplier * 5.0 * chest_multiplier * material_multiplier
 
     def GetTempoStat(self):
-        if self.mainID not in (NECK, RING, WEAPONS, CHEST, SHOULDER, HANDS, FEET):
+        if self.mainID not in (NECK, RING, S, CHEST, SHOULDER, HANDS, FEET):
             return 0
         
         weaponType_multiplier = 0.1
-        if self.mainID == WEAPONS:
-            if self.subID in (WEAPON_Greatsword, WEAPON_Greataxe, WEAPON_Greatmace,
-                              WEAPON_Longsword, WEAPON_Staff, WEAPON_Wand,
-                              WEAPON_Fork, WEAPON_Boomerang, WEAPON_Bow,
-                              WEAPON_Crossbow):
+        if self.mainID == S:
+            if self.subID in (_Greatsword, _Greataxe, _Greatmace,
+                              _Longsword, _Staff, _Wand,
+                              _Fork, _Boomerang, _Bow,
+                              _Crossbow):
                 weaponType_multiplier = 0.2
                 
         elif self.mainID == CHEST:
@@ -177,7 +189,7 @@ ARMOR: {self.GetArmorStat():.1f}''')
         return SomeCurve(self.number_of_spirits * 0.1 + self.level, self.rarity) * chest_multiplier
 
     def GetRegStat(self):
-        if self.mainID not in (WEAPONS, CHEST, SHOULDER, HANDS, FEET):
+        if self.mainID not in (S, CHEST, SHOULDER, HANDS, FEET):
             return 0
         
         if self.mainID == CHEST:
@@ -196,33 +208,33 @@ ARMOR: {self.GetArmorStat():.1f}''')
         return level_multiplier * chest_multiplier * attribute_multiplier
 
     def GetDMGStat(self):
-        if self.mainID != WEAPONS:
+        if self.mainID != S:
             return 0
         spirit_multiplier = self.number_of_spirits * 0.1
 
-        if self.subID in (WEAPON_Dagger, WEAPON_Fist):
+        if self.subID in (_Dagger, _Fist):
             return SomeCurve(self.level + spirit_multiplier, self.rarity) * 2
-        elif self.subID == WEAPON_Longsword:
+        elif self.subID == _Longsword:
             return SomeCurve(self.level + spirit_multiplier, self.rarity) * 4
-        elif self.subID == WEAPON_Shield:
+        elif self.subID == _Shield:
             return SomeCurve(self.level + spirit_multiplier, self.rarity) * 2
-        elif self.subID in (WEAPON_Greatsword, WEAPON_Greataxe, WEAPON_Greatmace,
-                            WEAPON_Longsword, WEAPON_Staff, WEAPON_Wand,
-                            WEAPON_Fork, WEAPON_Boomerang, WEAPON_Bow,
-                            WEAPON_Crossbow):
+        elif self.subID in (_Greatsword, _Greataxe, _Greatmace,
+                            _Longsword, _Staff, _Wand,
+                            _Fork, _Boomerang, _Bow,
+                            _Crossbow):
             return SomeCurve(self.level + spirit_multiplier, self.rarity) * 8
         else:
             return SomeCurve(self.level + spirit_multiplier, self.rarity) * 4
             
     def GetCritStat(self):
-        if self.mainID not in (NECK, RING, WEAPONS, CHEST, SHOULDER, HANDS, FEET):
+        if self.mainID not in (NECK, RING, S, CHEST, SHOULDER, HANDS, FEET):
             return 0
         multiplier = 0.05
-        if self.mainID == WEAPONS:
-            if self.subID in (WEAPON_Greatsword, WEAPON_Greataxe, WEAPON_Greatmace,
-                              WEAPON_Longsword, WEAPON_Staff, WEAPON_Wand,
-                              WEAPON_Fork, WEAPON_Boomerang, WEAPON_Bow,
-                              WEAPON_Crossbow):
+        if self.mainID == S:
+            if self.subID in (_Greatsword, _Greataxe, _Greatmace,
+                              _Longsword, _Staff, _Wand,
+                              _Fork, _Boomerang, _Bow,
+                              _Crossbow):
                 multiplier = 0.1
         elif self.mainID == CHEST:
             multiplier = 0.1
@@ -255,12 +267,24 @@ ARMOR: {self.GetArmorStat():.1f}''')
             multiplier *= 0.75
             
         return SomeCurve(self.number_of_spirits * 0.1 + self.level, self.rarity) * multiplier
-        
+
+    def GetHealingStat(self):
+        if self.mainID != USEABLE_ITEMS:
+            return 0
+
+        if self.subID in (LifePotion, CactusPotion):
+            return SomeCurve(self.level, self.rarity) * 200
+        elif self.subID in (GinsengSoup, SnowberryMash, MushroomSpit):
+            return SomeCurve(self.level, self.rarity) * 200
+        elif self.subID in (PineappleSlice, PumpkinMuffin):
+            return SomeCurve(self.level, self.rarity) * 100
+        else:
+            return 0
 
 
 ##item = Item(
-##    mainID = WEAPONS,
-##    subID = WEAPON_Greatmace,
+##    mainID = S,
+##    subID = _Greatmace,
 ##    mod = 5,
 ##    attributes = 9,
 ##    material = WOOD,
@@ -307,8 +331,49 @@ ARMOR: {self.GetArmorStat():.1f}''')
 ##    mod = mod,
 ##    attributes = attributes,
 ##    material = material,
-##    number_of_spirits = 0,
+##    number_of_spirits = 2,
 ##    level = level,
 ##    rarity = rarity
 ##    )
 ##testitem.PrintSummary()
+
+##max_DMG = 0
+##best_weapon = None
+##for mod in range(0, 100):
+##    for attributes in range(0, 25):
+##        for material in range(0, 30):
+##            for rarity in range(0, 5):
+##                
+##                item = Item(
+##                    mainID = S,
+##                    subID = _Greatmace,
+##                    mod = mod,
+##                    attributes = attributes,
+##                    material = material,
+##                    number_of_spirits = 0,
+##                    level = 3,
+##                    rarity = rarity
+##                    )
+##                dmg = item.GetCritStat()
+##                if dmg > max_DMG:
+##                    max_DMG = dmg
+##                    best_weapon = item
+##
+##                
+##
+##best_weapon.PrintSummary()
+
+
+##item = Item(
+##    mainID = USEABLE_ITEMS,
+##    subID = LifePotion,
+##    mod = 0,
+##    attributes = 0,
+##    material = 0,
+##    number_of_spirits = 0,
+##    level = 3,
+##    rarity = 0
+##    )
+##
+##print(item.GetHealingStat())       
+
