@@ -239,7 +239,7 @@ ARMOR: {self.GetArmorStat():.1f}''')
         elif self.mainID == CHEST:
             multiplier = 0.1
 
-        attribute_multiplier =  attribute_multiplier = (self.ModAndAttributes() % 0x15) / 20
+        attribute_multiplier = (self.ModAndAttributes() % 0x15) / 20
         material_multiplier = 1 - attribute_multiplier
         if self.material == GOLD:
             material_multiplier += 1
